@@ -38,9 +38,9 @@ class _LogInState extends State<LogIn> {
                     fontWeight: FontWeight.w700,
                   ),
                 ),
-                Row(
+                const Row(
                   children: [
-                    const Text('One stop solution for all your expenses',
+                    Text('One stop solution for all your expenses',
                         style: TextStyle(
                           fontSize: 15,
                           color: secondaryTextColor,
@@ -66,16 +66,15 @@ class _LogInState extends State<LogIn> {
                       return null;
                     },
                     controller: _emailController,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       border: InputBorder.none,
                       labelText: 'Email',
-                      labelStyle: const TextStyle(color: secondaryTextColor),
-                      prefixIcon:
-                          const Icon(Icons.email, color: secondaryTextColor),
+                      labelStyle: TextStyle(color: secondaryTextColor),
+                      prefixIcon: Icon(Icons.email, color: secondaryTextColor),
                     ),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 Container(
@@ -92,16 +91,16 @@ class _LogInState extends State<LogIn> {
                     },
                     controller: _passwordController,
                     obscureText: true,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       border: InputBorder.none,
                       labelText: 'Password',
-                      labelStyle: const TextStyle(color: secondaryTextColor),
+                      labelStyle: TextStyle(color: secondaryTextColor),
                       prefixIcon:
-                          const Icon(Icons.password, color: secondaryTextColor),
+                          Icon(Icons.password, color: secondaryTextColor),
                     ),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 30,
                 ),
                 InkWell(
@@ -109,11 +108,32 @@ class _LogInState extends State<LogIn> {
                     if (!_formKey.currentState!.validate()) {
                       return;
                     }
+                    Get.dialog(Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          height: 100,
+                          width: 100,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: const Center(
+                            child: CircularProgressIndicator(),
+                          ),
+                        ),
+                      ],
+                    ));
                     UserData.loginUser(
                             _emailController.text, _passwordController.text)
                         .then((value) {
                       if (value.sId != null) {
                         Get.offAll(Home(), transition: Transition.fade);
+                      } else {
+                        Get.back();
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                                content: Text('Invalid email or password')));
                       }
                     });
                   },
@@ -124,13 +144,13 @@ class _LogInState extends State<LogIn> {
                       color: primaryColor,
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    child: Row(
+                    child: const Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
                           'Log In',
                           textAlign: TextAlign.center,
-                          style: const TextStyle(
+                          style: TextStyle(
                             color: Colors.white,
                             fontSize: 20,
                           ),

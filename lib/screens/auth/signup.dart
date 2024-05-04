@@ -135,12 +135,34 @@ class _SignUpState extends State<SignUp> {
                     if (!_formKey.currentState!.validate()) {
                       return;
                     }
+                    Get.dialog(Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          height: 100,
+                          width: 100,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: const Center(
+                            child: CircularProgressIndicator(),
+                          ),
+                        ),
+                      ],
+                    ));
 
                     UserData.signUpUser(_usernameController.text,
                             _emailController.text, _passwordController.text)
                         .then((value) {
                       if (value.sId != null) {
                         Get.offAll(Home(), transition: Transition.fade);
+                      } else {
+                        Get.back();
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                                content:
+                                    Text('Error occured while signing up')));
                       }
                     });
                   },

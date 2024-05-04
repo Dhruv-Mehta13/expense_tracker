@@ -9,35 +9,47 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class UserData {
   static Future<User> loginUser(String email, String password) async {
-    var response = await Dio()
-        .post('https://expensetracker-2ru5.onrender.com/api/loginUser', data: {
-      'email': email,
-      'password': password,
-    });
-    if (response.statusCode == 200) {
-      var user = User.fromJson(response.data['data']);
-      var sharedPreferences = await SharedPreferences.getInstance();
-      sharedPreferences.setString('userId', user.sId!);
-      return user;
-    } else {
+    try {
+      var response = await Dio().post(
+          'https://expensetracker-2ru5.onrender.com/api/loginUser',
+          data: {
+            'email': email,
+            'password': password,
+          });
+      if (response.statusCode == 200) {
+        var user = User.fromJson(response.data['data']);
+        var sharedPreferences = await SharedPreferences.getInstance();
+        sharedPreferences.setString('userId', user.sId!);
+        return user;
+      } else {
+        return User();
+      }
+    } catch (e) {
+      print(e);
       return User();
     }
   }
 
   static Future<User> signUpUser(
       String username, String email, String password) async {
-    var response = await Dio()
-        .post('https://expensetracker-2ru5.onrender.com/api/createUser', data: {
-      'username': username,
-      'email': email,
-      'password': password,
-    });
-    if (response.statusCode == 200) {
-      var user = User.fromJson(response.data['data']);
-      var sharedPreferences = await SharedPreferences.getInstance();
-      sharedPreferences.setString('userId', user.sId!);
-      return user;
-    } else {
+    try {
+      var response = await Dio().post(
+          'https://expensetracker-2ru5.onrender.com/api/createUser',
+          data: {
+            'username': username,
+            'email': email,
+            'password': password,
+          });
+      if (response.statusCode == 200) {
+        var user = User.fromJson(response.data['data']);
+        var sharedPreferences = await SharedPreferences.getInstance();
+        sharedPreferences.setString('userId', user.sId!);
+        return user;
+      } else {
+        return User();
+      }
+    } catch (e) {
+      print(e);
       return User();
     }
   }
@@ -49,40 +61,51 @@ class UserData {
   }
 
   static Future<User> getUser() async {
-    var sharedPreferences = await SharedPreferences.getInstance();
-    var userId = sharedPreferences.getString('userId');
-    print(userId);
-    if (userId != null) {
-      var response = await Dio()
-          .post('https://expensetracker-2ru5.onrender.com/api/loadUser', data: {
-        'id': userId,
-      });
-      if (response.statusCode == 200) {
-        return User.fromJson(response.data['data']);
+    try {
+      var sharedPreferences = await SharedPreferences.getInstance();
+      var userId = sharedPreferences.getString('userId');
+      print(userId);
+      if (userId != null) {
+        var response = await Dio().post(
+            'https://expensetracker-2ru5.onrender.com/api/loadUser',
+            data: {
+              'id': userId,
+            });
+        if (response.statusCode == 200) {
+          return User.fromJson(response.data['data']);
+        } else {
+          return User();
+        }
       } else {
         return User();
       }
-    } else {
+    } catch (e) {
+      print(e);
       return User();
     }
   }
 
   static Future<Stats> loadStats() async {
-    var sharedPreferences = await SharedPreferences.getInstance();
-    var userId = sharedPreferences.getString('userId');
-    print(userId);
-    if (userId != null) {
-      var response = await Dio().post(
-          'https://expensetracker-2ru5.onrender.com/api/loadStats',
-          data: {
-            'id': userId,
-          });
-      if (response.statusCode == 200) {
-        return Stats.fromJson(response.data['data']);
+    try {
+      var sharedPreferences = await SharedPreferences.getInstance();
+      var userId = sharedPreferences.getString('userId');
+      print(userId);
+      if (userId != null) {
+        var response = await Dio().post(
+            'https://expensetracker-2ru5.onrender.com/api/loadStats',
+            data: {
+              'id': userId,
+            });
+        if (response.statusCode == 200) {
+          return Stats.fromJson(response.data['data']);
+        } else {
+          return Stats();
+        }
       } else {
         return Stats();
       }
-    } else {
+    } catch (e) {
+      print(e);
       return Stats();
     }
   }
