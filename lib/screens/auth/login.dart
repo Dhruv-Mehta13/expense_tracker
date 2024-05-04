@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get_utils/src/get_utils/get_utils.dart';
 import 'package:get/route_manager.dart';
+import 'package:lottie/lottie.dart';
 
 class LogIn extends StatefulWidget {
   const LogIn({super.key});
@@ -118,8 +119,9 @@ class _LogInState extends State<LogIn> {
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(10),
                           ),
-                          child: const Center(
-                            child: CircularProgressIndicator(),
+                          child: Center(
+                            child:
+                                LottieBuilder.asset('assets/svg/loading.json'),
                           ),
                         ),
                       ],
