@@ -34,96 +34,92 @@ class _AppBarState extends State<MyAppBar> {
       scrolledUnderElevation: 0,
       backgroundColor: Colors.white,
       title: widget.isDataLoaded
-          ? Expanded(
-              child: Row(
-                children: [
-                  widget.currentUser != null
-                      ? Row(
-                          children: [
-                            CircleAvatar(
-                              radius: 20,
-                              backgroundColor: primaryColor,
-                              child: Text(
-                                widget.userInitials,
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16,
-                                ),
+          ? Row(
+              children: [
+                widget.currentUser != null
+                    ? Row(
+                        children: [
+                          CircleAvatar(
+                            radius: 20,
+                            backgroundColor: primaryColor,
+                            child: Text(
+                              widget.userInitials,
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
                               ),
                             ),
-                          ],
-                        )
-                      : SizedBox(),
-                  SizedBox(width: 10),
-                  Expanded(
-                    child: Text(
-                      'Welcome, ${widget.currentUser?.username}',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20,
-                      ),
+                          ),
+                        ],
+                      )
+                    : SizedBox(),
+                SizedBox(width: 10),
+                Expanded(
+                  child: Text(
+                    'Welcome, ${widget.currentUser?.username}',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
                     ),
                   ),
-                  Row(
-                    children: [
-                      IconButton(
-                          onPressed: () {
-                            UserData.logoutUser();
-                          },
-                          icon: Icon(Icons.logout)),
-                    ],
-                  )
-                ],
-              ),
+                ),
+                Row(
+                  children: [
+                    IconButton(
+                        onPressed: () {
+                          UserData.logoutUser();
+                        },
+                        icon: Icon(Icons.logout)),
+                  ],
+                )
+              ],
             )
-          : Expanded(
-              child: Row(
-                children: [
-                  Row(
-                    children: [
-                      Shimmer.fromColors(
-                        baseColor: Colors.grey.shade300,
-                        highlightColor: Colors.grey.shade400,
-                        child: CircleAvatar(
-                          radius: 20,
-                          backgroundColor: primaryColor,
-                          child: Text(
-                            "XX",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
-                            ),
+          : Row(
+              children: [
+                Row(
+                  children: [
+                    Shimmer.fromColors(
+                      baseColor: Colors.grey.shade300,
+                      highlightColor: Colors.grey.shade400,
+                      child: CircleAvatar(
+                        radius: 20,
+                        backgroundColor: primaryColor,
+                        child: Text(
+                          "XX",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
                           ),
                         ),
                       ),
-                    ],
-                  ),
-                  SizedBox(width: 10),
-                  Expanded(
-                      child: Shimmer.fromColors(
-                    baseColor: Colors.grey.shade300,
-                    highlightColor: Colors.grey.shade400,
-                    child: Container(
-                      height: 20,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5),
-                        color: Colors.grey.shade300,
-                      ),
                     ),
-                  )),
-                  Row(
-                    children: [
-                      IconButton(
-                          onPressed: () {
-                            UserData.logoutUser();
-                          },
-                          icon: Icon(Icons.logout)),
-                    ],
-                  )
-                ],
-              ),
+                  ],
+                ),
+                SizedBox(width: 10),
+                Expanded(
+                    child: Shimmer.fromColors(
+                  baseColor: Colors.grey.shade300,
+                  highlightColor: Colors.grey.shade400,
+                  child: Container(
+                    height: 20,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(5),
+                      color: Colors.grey.shade300,
+                    ),
+                  ),
+                )),
+                Row(
+                  children: [
+                    IconButton(
+                        onPressed: () {
+                          UserData.logoutUser();
+                        },
+                        icon: Icon(Icons.logout)),
+                  ],
+                )
+              ],
             ),
     );
   }

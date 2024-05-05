@@ -1,7 +1,9 @@
 import 'package:expense_tracker/constants/colors.dart';
 import 'package:expense_tracker/models/Stats.dart';
+import 'package:expense_tracker/screens/My_expenses/myExpense.dart';
 import 'package:expense_tracker/screens/add_expense.dart/add.dart';
 import 'package:expense_tracker/screens/home/app_bar.dart';
+import 'package:expense_tracker/screens/home/bottom.dart';
 import 'package:expense_tracker/screens/home/category_card_widget.dart';
 import 'package:expense_tracker/screens/home/total_card_widget.dart';
 import 'package:expense_tracker/screens/set_budget/set_budget.dart';
@@ -129,71 +131,22 @@ class _HomePageState extends State<Home> {
           ],
         ),
       ),
-      bottomNavigationBar: NavigationBarTheme(
-        data: NavigationBarThemeData(
-          labelTextStyle: MaterialStateProperty.resolveWith<TextStyle>(
-            (Set<MaterialState> states) =>
-                states.contains(MaterialState.selected)
-                    ? const TextStyle(color: Colors.black, fontSize: 15)
-                    : const TextStyle(color: Colors.black, fontSize: 15),
-          ),
-        ),
-        child: NavigationBar(
-          backgroundColor: Colors.white,
-          selectedIndex: current_page,
-          labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
-          indicatorColor: primaryColor,
-          onDestinationSelected: (value) {
-            if (value == 0) {
-              setState(() {
-                current_page = value;
-              });
-              Get.to(Home(), transition: Transition.cupertino);
-            } else if (value == 1) {
-              setState(() {
-                current_page = value;
-              });
-              Get.to(Home(), transition: Transition.cupertino);
-            } else if (value == 2) {
-              setState(() {
-                current_page = value;
-              });
-              Get.to(AddExpense(), transition: Transition.cupertino);
-            } else if (value == 3) {
-              setState(() {
-                current_page = value;
-              });
-              Get.to(SetBudget(), transition: Transition.cupertino);
-            }
-          },
-          destinations: [
-            NavigationDestination(
-              icon: Icon(
-                Icons.home,
-                color: current_page == 0 ? Colors.white : primaryColor,
-              ),
-              label: 'Home',
-            ),
-            NavigationDestination(
-                icon: Icon(
-                  Icons.person,
-                  color: current_page == 1 ? Colors.white : primaryColor,
-                ),
-                label: 'Expenses'),
-            NavigationDestination(
-                icon: Icon(
-                  Icons.add_box_outlined,
-                  color: current_page == 2 ? Colors.white : primaryColor,
-                ),
-                label: 'Add'),
-            NavigationDestination(
-                icon: Icon(
-                  Icons.savings_outlined,
-                  color: current_page == 3 ? Colors.white : primaryColor,
-                ),
-                label: 'Set'),
-          ],
-        ),
+      bottomNavigationBar: Bottom_Navigation_Bar(
+        currentIndex: current_page,
+        onTap: (int index) {
+          setState(() {
+            current_page = index;
+          });
+          if (index == 0) {
+            Get.off(Home(), transition: Transition.cupertino);
+          } else if (index == 1) {
+            Get.off(MyExpense(), transition: Transition.cupertino);
+          } else if (index == 2) {
+            Get.off(AddExpense(), transition: Transition.cupertino);
+          } else if (index == 3) {
+            Get.off(SetBudget(), transition: Transition.cupertino);
+          }
+        },
       ),
     );
   }
