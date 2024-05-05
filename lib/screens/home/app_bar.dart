@@ -30,6 +30,7 @@ class _AppBarState extends State<MyAppBar> {
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      automaticallyImplyLeading: false,
       scrolledUnderElevation: 0,
       backgroundColor: Colors.white,
       title: widget.isDataLoaded

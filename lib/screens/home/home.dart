@@ -1,8 +1,10 @@
 import 'package:expense_tracker/constants/colors.dart';
 import 'package:expense_tracker/models/Stats.dart';
+import 'package:expense_tracker/screens/add_expense.dart/add.dart';
 import 'package:expense_tracker/screens/home/app_bar.dart';
 import 'package:expense_tracker/screens/home/category_card_widget.dart';
 import 'package:expense_tracker/screens/home/total_card_widget.dart';
+import 'package:expense_tracker/screens/set_budget/set_budget.dart';
 import 'package:flutter/material.dart';
 import 'package:expense_tracker/data/UserData.dart';
 import 'package:expense_tracker/models/User.dart';
@@ -156,12 +158,12 @@ class _HomePageState extends State<Home> {
               setState(() {
                 current_page = value;
               });
-              Get.to(Home(), transition: Transition.cupertino);
+              Get.to(AddExpense(), transition: Transition.cupertino);
             } else if (value == 3) {
               setState(() {
                 current_page = value;
               });
-              Get.to(Home(), transition: Transition.cupertino);
+              Get.to(SetBudget(), transition: Transition.cupertino);
             }
           },
           destinations: [
