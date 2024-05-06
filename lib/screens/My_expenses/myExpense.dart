@@ -14,6 +14,7 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/route_manager.dart';
 import 'package:intl/intl.dart';
+import 'package:shimmer/shimmer.dart';
 
 String _getInitials(String? username) {
   if (username != null) {
@@ -108,7 +109,7 @@ class _MyExpenseState extends State<MyExpense> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: MyAppBar(
-        isDataLoaded: true,
+        isDataLoaded: isDataLoaded,
         currentUser: currentUser,
         userInitials: userInitials,
       ),
@@ -230,84 +231,101 @@ class _MyExpenseState extends State<MyExpense> {
             height: 10,
           ),
           Expanded(
-            child: FutureBuilder(
-                future: UserData.loadExpenses(currentDate),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  } else {
-                    if (snapshot.hasError) {
-                      return const Center(
-                        child: Text('An error occurred'),
-                      );
-                    } else {
-                      List<Expense> expenses = snapshot.data as List<Expense>;
-                      return ListView.builder(
-                        itemBuilder: (context, index) {
-                          if (selectedFilter != 'All') {
-                            if (expenses[index]
-                                .category
-                                .toString()
-                                .toLowerCase()
-                                .contains(selectedFilter.toLowerCase())) {
-                              return Expense_card(
-                                category: expenses[index].category.toString(),
-                                description:
-                                    expenses[index].description.toString(),
-                                amount: int.parse(
-                                    expenses[index].amount.toString()),
-                                date: DateFormat('dd MMM yyyy').format(
-                                  DateTime.parse(
-                                      expenses[index].date.toString()),
-                                ),
-                                name: expenses[index].name.toString(),
-                              );
-                            } else {
-                              return const SizedBox();
-                            }
-                          }
-                          if (searchController.text.isNotEmpty) {
-                            if (expenses[index]
-                                .name
-                                .toString()
-                                .toLowerCase()
-                                .contains(
-                                    searchController.text.toLowerCase())) {
-                              return Expense_card(
-                                category: expenses[index].category.toString(),
-                                description:
-                                    expenses[index].description.toString(),
-                                amount: int.parse(
-                                    expenses[index].amount.toString()),
-                                date: DateFormat('dd MMM yyyy').format(
-                                  DateTime.parse(
-                                      expenses[index].date.toString()),
-                                ),
-                                name: expenses[index].name.toString(),
-                              );
-                            } else {
-                              return const SizedBox();
-                            }
-                          }
-                          return Expense_card(
-                            category: expenses[index].category.toString(),
-                            description: expenses[index].description.toString(),
-                            amount:
-                                int.parse(expenses[index].amount.toString()),
-                            date: DateFormat('dd MMM yyyy').format(
-                              DateTime.parse(expenses[index].date.toString()),
-                            ),
-                            name: expenses[index].name.toString(),
+              child: isDataLoaded
+                  ? FutureBuilder(
+                      future: UserData.loadExpenses(currentDate),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return ListView.builder(
+                            itemCount: 10,
+                            itemBuilder: (context, index) {
+                              return Shimmer_Expense_card();
+                            },
                           );
-                        },
-                        itemCount: expenses.length,
-                      );
-                    }
-                  }
-                }),
-          ),
+                        } else {
+                          if (snapshot.hasError) {
+                            return const Center(
+                              child: Text('An error occurred'),
+                            );
+                          } else {
+                            List<Expense> expenses =
+                                snapshot.data as List<Expense>;
+                            return ListView.builder(
+                              itemBuilder: (context, index) {
+                                if (selectedFilter != 'All') {
+                                  if (expenses[index]
+                                      .category
+                                      .toString()
+                                      .toLowerCase()
+                                      .contains(selectedFilter.toLowerCase())) {
+                                    return Expense_card(
+                                      category:
+                                          expenses[index].category.toString(),
+                                      description: expenses[index]
+                                          .description
+                                          .toString(),
+                                      amount: int.parse(
+                                          expenses[index].amount.toString()),
+                                      date: DateFormat('dd MMM yyyy').format(
+                                        DateTime.parse(
+                                            expenses[index].date.toString()),
+                                      ),
+                                      name: expenses[index].name.toString(),
+                                    );
+                                  } else {
+                                    return const SizedBox();
+                                  }
+                                }
+                                if (searchController.text.isNotEmpty) {
+                                  if (expenses[index]
+                                      .name
+                                      .toString()
+                                      .toLowerCase()
+                                      .contains(searchController.text
+                                          .toLowerCase())) {
+                                    return Expense_card(
+                                      category:
+                                          expenses[index].category.toString(),
+                                      description: expenses[index]
+                                          .description
+                                          .toString(),
+                                      amount: int.parse(
+                                          expenses[index].amount.toString()),
+                                      date: DateFormat('dd MMM yyyy').format(
+                                        DateTime.parse(
+                                            expenses[index].date.toString()),
+                                      ),
+                                      name: expenses[index].name.toString(),
+                                    );
+                                  } else {
+                                    return const SizedBox();
+                                  }
+                                }
+                                return Expense_card(
+                                  category: expenses[index].category.toString(),
+                                  description:
+                                      expenses[index].description.toString(),
+                                  amount: int.parse(
+                                      expenses[index].amount.toString()),
+                                  date: DateFormat('dd MMM yyyy').format(
+                                    DateTime.parse(
+                                        expenses[index].date.toString()),
+                                  ),
+                                  name: expenses[index].name.toString(),
+                                );
+                              },
+                              itemCount: expenses.length,
+                            );
+                          }
+                        }
+                      })
+                  : ListView.builder(
+                      itemCount: 10,
+                      itemBuilder: (context, index) {
+                        return Shimmer_Expense_card();
+                      },
+                    )),
         ],
       ),
       bottomNavigationBar: Bottom_Navigation_Bar(
@@ -317,13 +335,13 @@ class _MyExpenseState extends State<MyExpense> {
             current_page = index;
           });
           if (index == 0) {
-            Get.off(Home(), transition: Transition.cupertino);
+            Get.offAll(Home(), transition: Transition.noTransition);
           } else if (index == 1) {
-            Get.off(MyExpense(), transition: Transition.cupertino);
+            Get.offAll(MyExpense(), transition: Transition.noTransition);
           } else if (index == 2) {
-            Get.off(AddExpense(), transition: Transition.cupertino);
+            Get.offAll(AddExpense(), transition: Transition.noTransition);
           } else if (index == 3) {
-            Get.off(SetBudget(), transition: Transition.cupertino);
+            Get.offAll(SetBudget(), transition: Transition.noTransition);
           }
         },
       ),
@@ -402,6 +420,97 @@ Widget Expense_card(
                 ),
               ],
             ),
+          ],
+        ),
+      ],
+    ),
+  );
+}
+
+Widget Shimmer_Expense_card() {
+  return Container(
+    margin: const EdgeInsets.only(top: 10, left: 15, right: 15),
+    padding: const EdgeInsets.all(10),
+    decoration: BoxDecoration(
+      boxShadow: [
+        BoxShadow(color: Colors.grey.shade300, blurRadius: 5),
+      ],
+      borderRadius: BorderRadius.circular(15),
+      color: Colors.white,
+    ),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Shimmer.fromColors(
+          baseColor: Colors.grey.shade300,
+          highlightColor: Colors.grey.shade400,
+          child: CircleAvatar(
+            radius: 25,
+            backgroundColor: primaryColor,
+          ),
+        ),
+        SizedBox(width: 10),
+        Expanded(
+          flex: 3,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Shimmer.fromColors(
+                  baseColor: Colors.grey.shade300,
+                  highlightColor: Colors.grey.shade400,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(5),
+                      color: Colors.grey.shade300,
+                    ),
+                    height: 18,
+                    width: 100,
+                  )),
+              SizedBox(
+                height: 10,
+              ),
+              Shimmer.fromColors(
+                  baseColor: Colors.grey.shade300,
+                  highlightColor: Colors.grey.shade400,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(5),
+                      color: Colors.grey.shade300,
+                    ),
+                    height: 14,
+                    width: 200,
+                  )),
+            ],
+          ),
+        ),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Shimmer.fromColors(
+                baseColor: Colors.grey.shade300,
+                highlightColor: Colors.grey.shade400,
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(5),
+                    color: Colors.grey.shade300,
+                  ),
+                  height: 18,
+                  width: 80,
+                )),
+            SizedBox(
+              height: 10,
+            ),
+            Shimmer.fromColors(
+                baseColor: Colors.grey.shade300,
+                highlightColor: Colors.grey.shade400,
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(5),
+                    color: Colors.grey.shade300,
+                  ),
+                  height: 10,
+                  width: 60,
+                )),
           ],
         ),
       ],

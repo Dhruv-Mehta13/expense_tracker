@@ -16,6 +16,7 @@ class Bottom_Navigation_Bar extends StatelessWidget {
   Widget build(BuildContext context) {
     return NavigationBarTheme(
       data: NavigationBarThemeData(
+        backgroundColor: Colors.white,
         labelTextStyle: MaterialStateProperty.resolveWith<TextStyle>(
           (Set<MaterialState> states) => states.contains(MaterialState.selected)
               ? const TextStyle(color: Colors.black, fontSize: 15)
@@ -23,7 +24,7 @@ class Bottom_Navigation_Bar extends StatelessWidget {
         ),
       ),
       child: NavigationBar(
-        backgroundColor: Colors.white,
+        elevation: 0,
         selectedIndex: currentIndex,
         labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
         indicatorColor: primaryColor,

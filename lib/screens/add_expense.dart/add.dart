@@ -31,6 +31,7 @@ class _AddExpenseState extends State<AddExpense> {
   var current_page = 2;
   User? currentUser;
   late String userInitials = '';
+  var isDataLoaded = false;
   Stats? stats = Stats();
   @override
   void initState() {
@@ -45,6 +46,7 @@ class _AddExpenseState extends State<AddExpense> {
       currentUser = user;
       userInitials = _getInitials(currentUser?.username);
       stats = loadStats;
+      isDataLoaded = true;
     });
   }
 
@@ -64,7 +66,7 @@ class _AddExpenseState extends State<AddExpense> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: MyAppBar(
-        isDataLoaded: true,
+        isDataLoaded: isDataLoaded,
         currentUser: currentUser,
         userInitials: userInitials,
       ),
@@ -379,13 +381,13 @@ class _AddExpenseState extends State<AddExpense> {
             current_page = index;
           });
           if (index == 0) {
-            Get.off(Home(), transition: Transition.cupertino);
+            Get.offAll(Home(), transition: Transition.noTransition);
           } else if (index == 1) {
-            Get.off(MyExpense(), transition: Transition.cupertino);
+            Get.offAll(MyExpense(), transition: Transition.noTransition);
           } else if (index == 2) {
-            Get.off(AddExpense(), transition: Transition.cupertino);
+            Get.offAll(AddExpense(), transition: Transition.noTransition);
           } else if (index == 3) {
-            Get.off(SetBudget(), transition: Transition.cupertino);
+            Get.offAll(SetBudget(), transition: Transition.noTransition);
           }
         },
       ),

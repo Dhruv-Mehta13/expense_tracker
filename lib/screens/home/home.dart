@@ -65,7 +65,7 @@ class _HomePageState extends State<Home> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Total_Card(stats!),
+            isDataLoaded ? Total_Card(stats!) : Shimmer_Total_Card(),
             const Padding(
               padding: EdgeInsets.only(top: 20, left: 15, right: 15),
               child: Row(
@@ -138,13 +138,13 @@ class _HomePageState extends State<Home> {
             current_page = index;
           });
           if (index == 0) {
-            Get.off(Home(), transition: Transition.cupertino);
+            Get.offAll(Home(), transition: Transition.noTransition);
           } else if (index == 1) {
-            Get.off(MyExpense(), transition: Transition.cupertino);
+            Get.offAll(MyExpense(), transition: Transition.noTransition);
           } else if (index == 2) {
-            Get.off(AddExpense(), transition: Transition.cupertino);
+            Get.offAll(AddExpense(), transition: Transition.noTransition);
           } else if (index == 3) {
-            Get.off(SetBudget(), transition: Transition.cupertino);
+            Get.offAll(SetBudget(), transition: Transition.noTransition);
           }
         },
       ),

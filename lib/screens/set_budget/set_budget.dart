@@ -1,3 +1,4 @@
+import 'package:expense_tracker/screens/My_expenses/myExpense.dart';
 import 'package:expense_tracker/screens/home/bottom.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -82,7 +83,7 @@ class _SetBudgetState extends State<SetBudget> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: MyAppBar(
-        isDataLoaded: true,
+        isDataLoaded: isDataLoaded,
         currentUser: currentUser,
         userInitials: userInitials,
       ),
@@ -869,13 +870,13 @@ class _SetBudgetState extends State<SetBudget> {
             current_page = index;
           });
           if (index == 0) {
-            Get.off(Home(), transition: Transition.cupertino);
+            Get.offAll(Home(), transition: Transition.noTransition);
           } else if (index == 1) {
-            Get.off(SetBudget(), transition: Transition.cupertino);
+            Get.offAll(MyExpense(), transition: Transition.noTransition);
           } else if (index == 2) {
-            Get.off(AddExpense(), transition: Transition.cupertino);
+            Get.offAll(AddExpense(), transition: Transition.noTransition);
           } else if (index == 3) {
-            Get.off(SetBudget(), transition: Transition.cupertino);
+            Get.offAll(SetBudget(), transition: Transition.noTransition);
           }
         },
       ),
